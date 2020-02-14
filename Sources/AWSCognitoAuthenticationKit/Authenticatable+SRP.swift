@@ -1,4 +1,4 @@
-import BigNum
+import BigInt
 import Foundation
 import NIO
 import Crypto
@@ -76,6 +76,25 @@ public extension AWSCognitoAuthenticatable {
     }
 }
 
+typealias BigNum = BigInt
+
+extension BigInt {
+    init?(hex: String) {
+        self.init(hex, radix: 16)
+    }
+    
+    init(data: Data) {
+        self.init(sign: .plus, magnitude: BigUInt(data))
+    }
+    
+    init(data: [UInt8]) {
+        self.init(sign: .plus, magnitude: BigUInt(.init(data)))
+    }
+    
+    var data: Data { return self.magnitude.serialize() }
+    var hex: String { data.map{String(format: "%02x", $0)}.joined()}
+}
+
 /// Class to generate SRP password authentication key
 class SRP<H: HashFunction> {
     let N: BigNum
@@ -120,7 +139,6 @@ class SRP<H: HashFunction> {
             } while A % self.N == BigNum(0)
             
             self.a = a
-            print(a.hex)
             self.A = A
         }
     }

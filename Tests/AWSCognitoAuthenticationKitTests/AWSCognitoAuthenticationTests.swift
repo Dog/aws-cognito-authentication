@@ -1,7 +1,7 @@
 import XCTest
 import AWSSDKSwiftCore
 import CognitoIdentityProvider
-import BigNum
+//import BigNum
 import Crypto
 import NIO
 @testable import AWSCognitoAuthenticationKit
